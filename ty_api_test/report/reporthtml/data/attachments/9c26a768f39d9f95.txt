@@ -1,0 +1,3 @@
+[35mDEBUG   [0m my_logger:test_login_api.py:32 登录成功
+[35mDEBUG   [0m my_logger:test_login_api.py:37 access_token为：L7sP9Ummj3hM4IQJnOBX8x0gbLU=
+[35mDEBUG   [0m my_logger:keyantaizhang.py:27 成功返回可研台账列表数据

@@ -1,0 +1,38 @@
+#登录接口api ---下面为键值对数据，中文后面记得接小写冒号，再加1个空格
+登录: "api==/oauth/token"
+用户信息: "api==/user/data"
+#立项管理
+立项台账列表信息: "api==/investProInfo/pageList?pageNum=1&pageSize=10"
+立项查询: "api==/investProInfo/pageList?companyId=3&pageNum=1&pageSize=10"
+立项新增-项目编号: "api==/investProInfo/getProCode"
+立项详情: "api==/investProEstablish/detailById?id=1881522950882037762"
+创建立项项目: "api==/investProEstablish/add"
+项目编号: "api==/investProInfo/getProCode"
+上传文件: "api==/v1/file/upload"
+保存文件: "api==/investEstablishFiles/save"
+保存立项项目评审和决策情况: "api==/investEstablishDecision/save"
+立项提交稽核: "api==/investProEstablish/submit"
+稽核审批流程: "api==/flow/getIdentity?processkey=UNIT_LX"
+
+#待办
+待办任务: "api==/flow/getTask"
+立项待办任务: "api==/flow/getTask"
+#businessType=1,立项项目；2,可研项目；3，实施许可令；97，项目中止恢复；98，项目中止；99，项目终止
+
+稽核: "api==/investProEstablish/audit"
+#可研管理
+可研台账列表信息: "api==/investFeasibleInfo/pageList?pageNum=1&pageSize=10"
+立项完成的项目: "api==/investProInfo/pageList?projectStage=20"
+创建可研项目: "api==/investFeasibleInfo/generate"
+#可研基础信息: "api==/investFeasibleInfo/detail"
+保存可研基础信息: "api==/investFeasibleInfo/edit"
+保存可研资料: "api==/investFeasibleFile/save"
+保存实施计划: "api==/investFeasiblePlan/create"
+保存手续办理计划: "api==/investFeasibleCompliance/create"
+保存财务评价指标: "api==/investFeasibleEconomic/create"
+保存经济测算表: "api==/investFeasibleDecision/update"
+保存可研项目评审和决策情况: "api==/investFeasibleDecision/create"
+可研提交稽核: "api==/investFeasibleInfo/submit"
+
+
+

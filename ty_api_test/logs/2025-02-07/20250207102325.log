@@ -1,0 +1,4 @@
+2025-02-07 10:23:25,979 - logger.py[line:65] - INFO: hello
+2025-02-07 10:23:25,979 - logger.py[line:66] - DEBUG: bug警告
+2025-02-07 10:23:25,979 - logger.py[line:67] - DEBUG: 22222
+2025-02-07 10:23:25,979 - logger.py[line:68] - ERROR: XXX

@@ -1,0 +1,6 @@
+2025-02-08 15:54:33,046 - test_login_api.py[line:32] - DEBUG: 登录成功
+2025-02-08 15:54:33,047 - test_login_api.py[line:37] - DEBUG: access_token为：L7sP9Ummj3hM4IQJnOBX8x0gbLU=
+2025-02-08 15:54:33,159 - lixiangtaizhang.py[line:28] - DEBUG: 查询成功
+2025-02-08 15:54:33,215 - lixiangtaizhang.py[line:49] - DEBUG: 返回立项台账列表数据成功
+2025-02-08 15:54:33,272 - lixiangtaizhang.py[line:72] - DEBUG: 成功返回项目编号
+2025-02-08 15:54:33,313 - lixiangtaizhang.py[line:83] - DEBUG: 查看立项详情成功

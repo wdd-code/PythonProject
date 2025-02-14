@@ -1,0 +1,7 @@
+2025-02-11 14:15:20,505 - test_login_api.py[line:32] - DEBUG: 登录成功
+2025-02-11 14:15:20,506 - test_login_api.py[line:37] - DEBUG: access_token为：L7sP9Ummj3hM4IQJnOBX8x0gbLU=
+2025-02-11 14:15:20,693 - lixiangtaizhang.py[line:150] - DEBUG: 创建立项项目成功
+2025-02-11 14:15:20,734 - lixiangtaizhang.py[line:182] - DEBUG: 上传文件成功
+2025-02-11 14:15:20,772 - lixiangtaizhang.py[line:182] - DEBUG: 上传文件成功
+2025-02-11 14:15:20,834 - lixiangtaizhang.py[line:219] - DEBUG: 立项资料保存成功
+2025-02-11 14:15:20,868 - lixiangtaizhang.py[line:182] - DEBUG: 上传文件成功

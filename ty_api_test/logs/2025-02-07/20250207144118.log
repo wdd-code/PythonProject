@@ -1,0 +1,5 @@
+2025-02-07 14:41:18,857 - test_login_api.py[line:29] - DEBUG: 登录成功
+2025-02-07 14:41:18,858 - test_login_api.py[line:34] - DEBUG: access_token为：L7sP9Ummj3hM4IQJnOBX8x0gbLU=
+2025-02-07 14:41:18,923 - test_login_api.py[line:29] - DEBUG: 登录成功
+2025-02-07 14:41:18,923 - test_login_api.py[line:34] - DEBUG: access_token为：L7sP9Ummj3hM4IQJnOBX8x0gbLU=
+2025-02-07 14:41:18,987 - lixiangtaizhang.py[line:22] - DEBUG: 成功返回立项台账列表数据

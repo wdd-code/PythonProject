@@ -1,0 +1,10 @@
+2025-02-14 11:06:41,500 - login_api.py[line:34] - DEBUG: 登录成功
+2025-02-14 11:06:41,858 - keyantaizhang.py[line:60] - DEBUG: 添加可研项目成功
+2025-02-14 11:06:41,925 - keyantaizhang.py[line:152] - DEBUG: 可研填报-基础信息保存成功
+2025-02-14 11:06:41,960 - keyantaizhang.py[line:181] - DEBUG: 上传文件成功
+2025-02-14 11:06:42,001 - keyantaizhang.py[line:211] - DEBUG: 可研填报-可研资料保存成功
+2025-02-14 11:06:42,155 - keyantaizhang.py[line:275] - DEBUG: 可研填报-手续办理计划保存成功
+2025-02-14 11:06:42,219 - keyantaizhang.py[line:318] - DEBUG: 财务评价指标保存成功
+2025-02-14 11:06:42,257 - keyantaizhang.py[line:325] - DEBUG: 可研填报-经济测算表保存成功
+2025-02-14 11:06:42,317 - keyantaizhang.py[line:368] - DEBUG: 可研填报-可研项目评审和决策情况保存成功
+2025-02-14 11:06:42,430 - keyantaizhang.py[line:400] - DEBUG: 可研提交稽核成功

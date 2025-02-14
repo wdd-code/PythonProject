@@ -1,0 +1,13 @@
+2025-02-08 10:41:28,676 - test_login_api.py[line:32] - DEBUG: 登录成功
+2025-02-08 10:41:28,676 - test_login_api.py[line:37] - DEBUG: access_token为：L7sP9Ummj3hM4IQJnOBX8x0gbLU=
+2025-02-08 10:41:28,771 - lixiangtaizhang.py[line:26] - DEBUG: 成功返回立项台账列表数据
+2025-02-08 10:41:28,861 - test_login_api.py[line:32] - DEBUG: 登录成功
+2025-02-08 10:41:28,862 - test_login_api.py[line:37] - DEBUG: access_token为：L7sP9Ummj3hM4IQJnOBX8x0gbLU=
+2025-02-08 10:41:28,911 - keyantaizhang.py[line:27] - DEBUG: 成功返回可研台账列表数据
+2025-02-08 10:41:28,914 - test_tzb.py[line:10] - DEBUG: ['D:\\PythonProject\\ty_api_test\\TestCase', 'D:\\program file\\PyCharm Community Edition 2024.3\\plugins\\python-ce\\helpers\\pycharm', 'D:\\PythonProject', 'D:\\PythonProject\\.venv\\Scripts\\python313.zip', 'D:\\python3.13\\DLLs', 'D:\\python3.13\\Lib', 'D:\\python3.13', 'D:\\PythonProject\\.venv', 'D:\\PythonProject\\.venv\\Lib\\site-packages', 'D:\\PythonProject\\ty_api_test']
+2025-02-08 10:41:29,000 - test_login_api.py[line:32] - DEBUG: 登录成功
+2025-02-08 10:41:29,001 - test_login_api.py[line:37] - DEBUG: access_token为：L7sP9Ummj3hM4IQJnOBX8x0gbLU=
+2025-02-08 10:41:29,042 - lixiangtaizhang.py[line:26] - DEBUG: 成功返回立项台账列表数据
+2025-02-08 10:41:29,144 - test_login_api.py[line:32] - DEBUG: 登录成功
+2025-02-08 10:41:29,144 - test_login_api.py[line:37] - DEBUG: access_token为：L7sP9Ummj3hM4IQJnOBX8x0gbLU=
+2025-02-08 10:41:29,190 - keyantaizhang.py[line:27] - DEBUG: 成功返回可研台账列表数据
