@@ -46,25 +46,39 @@ class Lxtz:
         log.debug("查询成功")
 
     def lx_info(self):
-        """获取立项台账列表信息"""
+        """获取状态为立项填报的立项项目信息，返回projectid"""
         authorization = self.authorization
         # 定义接口URL
-        #url = "https://api-dev-bc-erp.002302.com.cn/investProInfo/pageList?pageNum=1&pageSize=10"
+        #url = "https://api-dev-bc-erp.002302.com.cn/investProInfo/pageList?projectName=&projectStatus=lxtb&pageNum=1&pageSize=10"
         host = Readconfig('HOST-TZB').host
         api = Api('api')['立项台账列表信息']
-        url = f"https://{host}{api}"
 
+        url = f"https://{host}{api}"
+        url1 = "&".join([url,'projectStatus=lxtb','projectName='])
+        # print(url1)
         # 定义请求头
         headers = {
             "Authorization": f"Bearer {authorization}"
         }
         # 定义请求参数
         # 发送GET请求
-        response = requests.get(url, headers=headers)
+        response = requests.get(url1, headers=headers)
         # 打印响应状态码
-        #print("Status Code:", response.status_code)
+        # print("Status Code:", response.status_code)
+        # print(response.json())
         assert response.status_code == 200
         log.debug("返回立项台账列表数据成功")
+        data = response.json()['data']
+        datalist = data['list']
+        projectid_list = []
+        for i in datalist:
+            projectid = i['projectId']
+            #print(projectid)
+            projectid_list.append(projectid)
+        else:
+            log.debug("没有立项填报的数据")
+        # print(projectid_list)
+        return projectid_list
 
     def lx_procode(self):
         """立项新增-项目编号"""
@@ -146,13 +160,40 @@ class Lxtz:
             'Cookie': 'JSESSIONID=89B7FDD075B82EA1DDED185F762A8C4E'
         }
         response = requests.post(url, headers=header1, data=data)
-        #print(response.json())
+        # print(response.json())
         assert response.status_code == 200
         log.debug("创建立项项目成功")
         data = response.json()['data']
         id = data['id']
-        #print(id)
+        # print(id)
         return id
+    def lx_remove_project(self,delnum=1):
+        """删除立项项目"""
+        authorization = self.authorization
+        host = Readconfig('HOST-TZB').host
+        api = Api('api')['删除立项项目']
+        url = f"https://{host}{api}"
+        projectid_list = self.lx_info()
+        if projectid_list :
+            for i in range(delnum):
+                id = projectid_list[i]
+                # print(id)
+                url1 = "?".join([url, f'id={id}'])
+                # print(url1)
+                headers = {
+                    "Authorization": f"Bearer {authorization}"
+                }
+
+                payload = f'id={id}'
+                # print(payload)
+                response = requests.post(url1, headers=headers, data=payload)
+                # print(response.json())
+                assert response.status_code == 200
+                log.debug("删除立项项目成功")
+
+        else:
+            log.debug("没有可删除的立项项目")
+
     def lx_upload(self):
         """上传文件"""
         authorization = self.authorization
@@ -280,8 +321,10 @@ class Lxtz:
 
 
 if __name__ == '__main__':
-    # l1 = Lxtz() #实例方法需要通过类的实例来调用，而不是直接通过类。
-    # l1.lx_create_project()
+    l1 = Lxtz() #实例方法需要通过类的实例来调用，而不是直接通过类。
+    # id = l1.lx_create_project()
+    #
+    l1.lx_remove_project(1)
     # l1.lx_search()
     # l1.lx_info()
     # l1.lx_procode()
@@ -291,10 +334,10 @@ if __name__ == '__main__':
     # l1.lx_submit(id)
     #l1.lx_jhlc()
     #批量造数据
-    for i in range(10):
-        l1 = Lxtz()
-        id = l1.lx_create_project()
-        l1.lx_save1(id)
-        l1.lx_save2(id)
-        l1.lx_submit(id)
-        i+=1
+    # for i in range(10):
+    #     l1 = Lxtz()
+    #     id = l1.lx_create_project()
+    #     l1.lx_save1(id)
+    #     l1.lx_save2(id)
+    #     l1.lx_submit(id)
+    #     i+=1

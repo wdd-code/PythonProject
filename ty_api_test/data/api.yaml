@@ -7,6 +7,7 @@
 立项新增-项目编号: "api==/investProInfo/getProCode"
 立项详情: "api==/investProEstablish/detailById?id=1881522950882037762"
 创建立项项目: "api==/investProEstablish/add"
+删除立项项目: "api==/investProInfo/remove"
 项目编号: "api==/investProInfo/getProCode"
 上传文件: "api==/v1/file/upload"
 保存文件: "api==/investEstablishFiles/save"
