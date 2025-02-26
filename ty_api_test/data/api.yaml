@@ -41,5 +41,8 @@
 实施许可令详情: "api==/investImplLicense/detail"
 添加实施许可令: "api==/investImplLicense/add"
 实施提交稽核: "api==/investImplLicense/submit"
+项目公司详情: "api==/investImplCompany/detail"
+添加项目公司: "api==/investImplCompany/add"
+项目公司提交稽核: "api==/investImplCompany/submit"
 
 

@@ -77,11 +77,6 @@ class Ssgl:
                 print(list_info1)
                 if not list_info1 or list_info1['implStatus'] == 'tb':
                 # print(response_json)
-                #     if ss_status == 'jh' or ss_status == 'sd' or ss_status == 'wc':
-                #         """如果data数据中implStatus字段值为jh、sd,表示处于稽核、审定状态，不可编辑，需要排除"""
-                #         log.debug("当前项目处于稽核、审定、完成状态，不可编辑，需要排除")
-                #         print("当前项目处于稽核、审定、完成状态，不可编辑，需要排除")
-                #         continue
                 # 3.添加实施许可令/暂存
                     api3 = Api('api')['添加实施许可令']
                     url4 = f"https://{host}{api3}"
@@ -134,7 +129,7 @@ class Ssgl:
                     response4 = requests.post(url5, data=data, headers=headers1)
                     print(response4.json())
                     assert response4.json()['code'] == 200
-                    log.debug("添加实施许可令成功")
+                    log.debug("实施许可令稽核提交成功")
                     break
                 else:
                     log.debug(f"第{i+1}个项目已处于实施稽核流程中，跳过")
@@ -143,6 +138,113 @@ class Ssgl:
                 log.debug("没有可研完成且尚未提交实施稽核的项目")
         else:
             log.debug("没有可研完成的项目")
+    def ss_project_company(self, queryname):
+            """更新项目公司，提交稽核"""
+            # 1.查询项目名称，模糊查询
+            authorization = self.authorization
+            host = Readconfig('HOST-TZB').host
+            headers = {
+                "Authorization": f"Bearer {authorization}"
+            }
+            api1 = Api('api')['可研完成的项目']
+            url1 = f"https://{host}{api1}"
+            projectname = urllib.parse.quote(queryname)
+            projectname1 = f"projectName={projectname}"
+            url2 = '&'.join([url1, projectname1])
+            response1 = requests.get(url2, headers=headers)
+            print(response1.json())
+            data = response1.json()['data']
+            datalist = data['list']
+            num = data['endRow']
+            if num > 0:
+                """可研完成的项目可能有多个，有些可能已经是提交稽核，用for循环来遍历尝试，直到添加成功break"""
+                for i in range(num):
+                    # 2.查询项目详情
+                    list_info = datalist[i]
+                    projectid = list_info['projectId']
+                    api2 = Api('api')['项目详情']
+                    url3 = f"https://{host}{api2}"
+                    url_ss = '?'.join([url3, f'projectId={projectid}'])
+                    response2 = requests.get(url_ss, headers=headers)
+                    response_json = response2.json()
+                    list_info1 = response_json['data']
+
+                    if list_info1['implCompanyStatus'] == 'tb':
+                        # 3.添加项目公司/暂存
+                        api3 = Api('api')['添加项目公司']
+                        url4 = f"https://{host}{api3}"
+                        uri, filename = self.ss_upload()
+                        data = json.dumps({
+                            "projectCompanyName": "测试项目公司",
+                            "projectId": f"{projectid}",
+                            "implCompanyStatus": "tb",
+                            "companyFiles": [
+                                {
+                                    "dictId": "105",
+                                    "file": [
+                                    ],
+                                    "fileName": f"{filename}",
+                                    "fileUrl": f"{uri}"
+                                }
+                            ]
+                        })
+                        headers1 = {
+                            "Authorization": f"Bearer {authorization}",
+                            "Content-Type": "application/json"
+                        }
+                        response3 = requests.post(url4, data=data, headers=headers1)
+                        print(response3.json())
+                        data2 = response3.json()['data']
+                        projectname2 = data2['projectName']
+                        # 4.提交稽核
+                        api4 = Api('api')['项目公司提交稽核']
+                        url5 = f"https://{host}{api4}"
+                        data1 = json.dumps({
+                            "processId": "1889227480372482048",
+                            "nodeUserList": [
+                                {
+                                    "nodeId": "1889118550821777409",
+                                    "userId": 70557
+                                },
+                                {
+                                    "nodeId": "1889228550821777409",
+                                    "userId": 71048
+                                }
+                            ],
+                            "businessType": 4,
+                            "businessData": {
+                                "data": {
+                                    "projectName": f"{projectname2}",
+                                    "projectId": f"{projectid}"
+                                }
+                            }
+                        })
+                        response4 = requests.post(url5, data=data1, headers=headers1)
+                        print(response4.json())
+                        assert response4.json()['code'] == 200
+                        log.debug("项目公司稽核提交成功")
+                        break
+                    else:
+                        log.debug(f"第{i+1}个项目已处于项目公司稽核流程中，跳过")
+                else:
+                    # 如果循环没有通过break退出，则执行else子句
+                    log.debug("没有可研完成的项目")
+
+
+    def ss_project_contract(self, queryname):
+            """更新项目招投标及合同文件，提交稽核"""
+
+    def ss_project_built(self, queryname):
+        """更新项目建设（实施）进度，提交稽核"""
+
+    def ss_project_procedure(self, queryname):
+        """更新项目合规性手续办理，提交稽核"""
+
+    def ss_project_investment(self, queryname):
+        """更新项目投资预算实施进度，提交稽核"""
+
+
+
 
 Ss = Ssgl()
 if __name__ == '__main__':
