@@ -14,7 +14,7 @@ class Kytz:
     """可研模块用例，封装相关api方法"""
     def __init__(self):
         self.authorization,self.userid = login()
-    def ky_add_project(self):
+    def ky_add_project(self,queryname):
         """添加可研项目"""
         authorization = self.authorization
         host = Readconfig('HOST-TZB').host
@@ -24,7 +24,7 @@ class Kytz:
         #查询项目名称，模糊查询
         api1 = Api('api')['立项完成的项目']
         url1 = f"https://{host}{api1}"
-        projectname = urllib.parse.quote('测试')  #对字符串进行url编码，解码用unquote()函数
+        projectname = urllib.parse.quote(queryname)  #对字符串进行url编码，解码用unquote()函数
         projectname1 = f"projectName={projectname}"
         url2 = '&'.join([url1,projectname1])
         #print(url2)
@@ -39,6 +39,7 @@ class Kytz:
                 list_info = datalist[i]
                 projectcode = list_info['projectCode']
                 id1 = list_info['id']
+                projectname2 = list_info['projectName']
                 #print(projectcode)
                 #print(id1)
                 api2 = Api('api')['创建可研项目']
@@ -57,10 +58,12 @@ class Kytz:
                     data2 = response_json['data']
                     id2 = data2['id']
                     createtime1 = data2['createdTime']
+                    projectid = data2['projectId']
                     # print(id2)
                     # print(createtime1)
+                    print(projectname2)
                     log.debug('添加可研项目成功')
-                    return id2, createtime1
+                    return id2, createtime1,projectname2,projectcode,projectid
                     break
                 # else:
                 #     i += 1
@@ -72,7 +75,7 @@ class Kytz:
             log.debug('暂时没有立项完成的测试项目')
             return None
 
-    def ky_save1(self,id,createtime):
+    def ky_save1(self,id,createtime,projectname,projectcode,projectid):
         """保存可研基础信息"""
         authorization = self.authorization
         host = Readconfig('HOST-TZB').host
@@ -108,9 +111,9 @@ class Kytz:
             "latitude": "30.697316212381597",
             "lineConfig": "生产线配置测试",
             "longitude": "104.36250469936057",
-            "projectCode": "0002502077",
-            "projectId": "1889487370983673857",
-            "projectName": "测试项目20250212093108",
+            "projectCode": f"{projectcode}",
+            "projectId": f"{projectid}",
+            "projectName": f"{projectname}",
             "registeredCapital": 10000000,
             "updatedBy": "曹孟",
             "updatedTime": f"{updatedtime}",
@@ -371,7 +374,7 @@ class Kytz:
         log.debug('可研填报-可研项目评审和决策情况保存成功')
         #return id1
 
-    def ky_save7(self,id):
+    def ky_save7(self,id,projectname):
         """可研提交稽核"""
         authorization = self.authorization
         host = Readconfig('HOST-TZB').host
@@ -396,27 +399,25 @@ class Kytz:
                 }
             ],
             "businessType": 2,
-            "instanceStatus": "PENDING"
+            "instanceStatus": "PENDING",
+            "businessData": {"data": {"projectName": f"{projectname}"}}
         })
         response = requests.post(url, data=data, headers=headers)
         assert response.status_code == 200
         log.debug("可研提交稽核成功")
 
-
-
-
-
 ky = Kytz()
 if __name__ == '__main__':
-    # for i in range(1):
-    #     result = ky.ky_add_project()
-    #     if result is not None:
-    #         id1, createtime = result
-    #         ky.ky_save1(id1, createtime)
-    #         ky.ky_save2(id1)
-    #         ky.ky_save3(id1)
-    #         ky.ky_save4(id1)
-    #         ky.ky_save5(id1)
-    #         ky.ky_save6(id1)
-    #         ky.ky_save7(id1)
-    ky.ky_add_project()
+    for i in range(2):
+        result = ky.ky_add_project('测试')
+        if result is not None:
+            id1, createtime, projectname, projectcode, projectid= result
+            ky.ky_save1(id1, createtime,projectname,projectcode,projectid)
+            ky.ky_save2(id1)
+            ky.ky_save3(id1)
+            ky.ky_save4(id1)
+            ky.ky_save5(id1)
+            ky.ky_save6(id1)
+            ky.ky_save7(id1, projectname)
+        i+=1
+    #ky.ky_add_project()

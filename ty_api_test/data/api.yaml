@@ -17,14 +17,16 @@
 
 #待办
 待办任务: "api==/flow/getTask"
-立项待办任务: "api==/flow/getTask"
+
 #businessType=1,立项项目；2,可研项目；3，实施许可令；97，项目中止恢复；98，项目中止；99，项目终止
 
-稽核: "api==/investProEstablish/audit"
+立项稽核: "api==/investProEstablish/audit"
+可研稽核: "api==/investFeasibleInfo/audit"
 #可研管理
 可研台账列表信息: "api==/investFeasibleInfo/pageList?pageNum=1&pageSize=10"
 立项完成的项目: "api==/investProInfo/pageList?projectStage=20"
 创建可研项目: "api==/investFeasibleInfo/generate"
+可研完成的项目: "api==/investProInfo/pageList?projectStage=30"
 #可研基础信息: "api==/investFeasibleInfo/detail"
 保存可研基础信息: "api==/investFeasibleInfo/edit"
 保存可研资料: "api==/investFeasibleFile/save"
@@ -35,5 +37,9 @@
 保存可研项目评审和决策情况: "api==/investFeasibleDecision/create"
 可研提交稽核: "api==/investFeasibleInfo/submit"
 
+#实施许可令管理
+实施许可令详情: "api==/investImplLicense/detail"
+添加实施许可令: "api==/investImplLicense/add"
+实施提交稽核: "api==/investImplLicense/submit"
 
 

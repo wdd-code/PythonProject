@@ -165,8 +165,9 @@ class Lxtz:
         log.debug("创建立项项目成功")
         data = response.json()['data']
         id = data['id']
+
         # print(id)
-        return id
+        return id, project_name
     def lx_remove_project(self,delnum=1):
         """删除立项项目"""
         authorization = self.authorization
@@ -288,7 +289,7 @@ class Lxtz:
         response = requests.post(url, data=data, headers=headers)
         assert response.status_code == 200
         log.debug("项目评审和决策情况保存成功")
-    def lx_submit(self, id):
+    def lx_submit(self, id,project_name):
         """项目立项提交稽核"""
         authorization = self.authorization
         host = Readconfig('HOST-TZB').host
@@ -313,7 +314,8 @@ class Lxtz:
 			    "userId": 71048
 		    }
 	        ],
-	    "businessType": 1
+	    "businessType": 1,
+        "businessData": {"data": {"projectName": f"{project_name}"}}
         })
         response = requests.post(url, data=data, headers=headers)
         assert response.status_code == 200
@@ -321,10 +323,10 @@ class Lxtz:
 
 
 if __name__ == '__main__':
-    l1 = Lxtz() #实例方法需要通过类的实例来调用，而不是直接通过类。
+    # l1 = Lxtz() #实例方法需要通过类的实例来调用，而不是直接通过类。
     # id = l1.lx_create_project()
     #
-    l1.lx_remove_project(1)
+    # l1.lx_remove_project(1)
     # l1.lx_search()
     # l1.lx_info()
     # l1.lx_procode()
@@ -334,10 +336,11 @@ if __name__ == '__main__':
     # l1.lx_submit(id)
     #l1.lx_jhlc()
     #批量造数据
-    # for i in range(10):
-    #     l1 = Lxtz()
-    #     id = l1.lx_create_project()
-    #     l1.lx_save1(id)
-    #     l1.lx_save2(id)
-    #     l1.lx_submit(id)
-    #     i+=1
+    for i in range(2):
+        l1 = Lxtz()
+        id, project_name = l1.lx_create_project()
+        l1.lx_save1(id)
+        sleep(1)
+        l1.lx_save2(id)
+        l1.lx_submit(id,project_name)
+        i+=1

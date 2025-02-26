@@ -38,11 +38,11 @@ class Test_tzb:
     def test_lx4(self):
         """验证立项项目提交稽核成功"""
         lx = Lxtz()
-        id = lx.lx_create_project()
+        id,project_name = lx.lx_create_project()
         try:
             lx.lx_save1(id)
             lx.lx_save2(id)
-            lx.lx_submit(id)
+            lx.lx_submit(id,project_name)
         except Exception as e:
             log.error(f"测试过程中出现异常，异常信息为：{e}")
     def test_lx5(self):
