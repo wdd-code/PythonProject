@@ -68,7 +68,7 @@ class Kytz:
                 # else:
                 #     i += 1
                 i += 1
-            else: #注意这个else是和for循环相关联的
+            else: #注意这个else是和for循环相关联的,只有在循环没有被break打断时才会执行
                 log.debug('暂时没有未填报的立项完成的测试项目')
                 return None
         else:

@@ -314,13 +314,15 @@ class Ssgl:
                         response4 = requests.post(url5, data=data2, headers=headers1)
                         print(response4.json())
                         assert response4.json()['code'] == 200
-                        log.debug("项目招投标及合同文件提交稽核成功")
+                        log.debug(f"{projectname2}项目招投标及合同文件提交稽核成功")
                         break
                     else:
                         log.debug(f"第{i+1}个项目已处于项目招投标及合同文件流程中，跳过")
                 else:
                     # 如果循环没有通过break退出，则执行else子句
-                    log.debug("没有可研完成的项目")
+                    log.debug("没有可研完成且尚未提交稽核的项目")
+            else:
+                log.debug("没有可研完成的项目")
 
     def ss_project_built(self, queryname):
         """更新项目建设（实施）进度，提交稽核"""
@@ -352,14 +354,20 @@ class Ssgl:
                 response2 = requests.get(url_ss, headers=headers)
                 response_json = response2.json()
                 response_data2 = response_json['data']
+                plan_date = response_data2[j]['planDate']
+                actual_date = plan_date + timedelta(days=7)
+                # actual_date = datetime.strftime(actual_date, '%Y-%m-%d')
+                print(actual_date)
                 num1 = len(response_data2)
+                count_num = 0 # 记录未提交稽核的节点数，由于提交稽核不需要所有节点都填写完，所以需要逐一判断节点是否已提交稽核
                 for j in range(num1):
                     if not response_data2[j]['implProgressStatus'] or response_data2[j]['implProgressStatus'] == 'tb':
+                        count_num += 1
+                        j += 1
+                else:
+                    if count_num == num1:
                         # 3.保存项目建设实施进度
-                        plan_date = response_data2[j]['planDate']
-                        actual_date = plan_date + timedelta(days=7)
-                        #actual_date = datetime.strftime(actual_date, '%Y-%m-%d')
-                        print(actual_date)
+
                         api3 = Api('api')['保存项目建设实施进度']
                         url4 = f"https://{host}{api3}"
                         uri, filename = self.ss_upload()
@@ -391,13 +399,48 @@ class Ssgl:
                         }
                         response3 = requests.post(url4, data=data1, headers=headers1)
                         print(response3.json())
+                        response_data3 = response3.json()['data']
+                        projectname2 = response_data3['projectName']
+                        # 4.提交稽核
+                        api4 = Api('api')['项目建设实施进度提交稽核']
+                        url5 = f"https://{host}{api4}"
+                        data2 = json.dumps({
+                            "processId": "1889599825780019200",
+                            "businessId": f"{projectid}",
+                            "nodeUserList": [
+                                {
+                                    "nodeId": "1889599825780019201",
+                                    "userId": 70557
+                                },
+                                {
+                                    "nodeId": "1889599825780019202",
+                                    "userId": 71048
+                                }
+                            ],
+                            "businessType": 6,
+                            "businessData": {
+                                "data": {
+                                    "projectName": f"{projectname2}",
+                                    "projectId": f"{projectid}"
+                                }
+                            }
+                        })
+                        headers2 = {
+                            "Authorization": f"Bearer {authorization}",
+                            "Content-Type": "application/json"
+                        }
+                        response4 = requests.post(url5, data=data2, headers=headers2)
+                        print(response4.json())
+                        assert response4.json()['code'] == 200
+                        log.debug(f'{projectname2}项目建设实施进度提交稽核成功')
                         break
                     else:
+                        log.debug(f"第{i + 1}个项目已处于项目建设实施进度流程中，跳过")
                         continue
-                else:
-                    log.debug(f"第{i + 1}个项目已处于项目建设实施进度流程中，跳过")
             else:
-                log.debug("没有可研完成的项目")
+                log.debug("没有可研完成且尚未提交稽核的项目")
+        else:
+            log.debug("没有可研完成的项目")
 
     def ss_project_procedure(self, queryname):
         """更新项目合规性手续办理，提交稽核"""
@@ -420,15 +463,96 @@ class Ssgl:
         if num > 0:
             """可研完成的项目可能有多个，有些可能已经是提交稽核，用for循环来遍历尝试，直到添加成功break"""
             for i in range(num):
-                # 2.查询项目招投标及合同文件详情
+                # 2.查询项目合规性手续详情详情
                 list_info = data_list1[i]
                 projectid = list_info['projectId']
-                api2 = Api('api')['项目招投标及合同文件详情']
+                api2 = Api('api')['项目合规性手续详情']
                 url3 = f"https://{host}{api2}"
                 url_ss = '?'.join([url3, f'projectId={projectid}'])
                 response2 = requests.get(url_ss, headers=headers)
                 response_json = response2.json()
                 response_data2 = response_json['data']
+                if not response_data2[0]['implComplianceStatus'] or response_data2[0]['implComplianceStatus'] == 'tb':
+                    # 3.保存项目合规性手续
+                    plan_date = response_data2[0]['planDate']
+                    actual_date = plan_date + timedelta(days=3)
+                    #actual_date = datetime.strftime(actual_date, '%Y-%m-%d')
+                    print(actual_date)
+                    api3 = Api('api')['保存项目合规性手续']
+                    url4 = f"https://{host}{api3}"
+                    uri, filename = self.ss_upload()
+                    data1 = json.dumps({
+                        "projectId": f"{projectid}",
+                        "detailList": [
+                            {
+                                "dictId": 76,
+                                "dictName": "立项备案登记",
+                                "feasibleComplianceId": "1892829138416406529",
+                                "planDate": f"{plan_date}",
+                                "remake": "手续备注测试1",
+                                "implComplianceStatus": "tb",
+                                "actualProgressDate": f"{actual_date}",
+                                "fileName": f"{filename}",
+                                "fileUrl": f"{uri}"
+                            },
+                            {
+                                "dictId": 88,
+                                "dictName": "生产资质",
+                                "feasibleComplianceId": "1892829138416406530",
+                                "planDate": f"{plan_date}",
+                                "remake": "手续备注测试2",
+                                "actualProgressDate": f"{actual_date}"
+                            }
+                        ]
+                    })
+                    headers1 = {
+                        "Authorization": f"Bearer {authorization}",
+                        "Content-Type": "application/json"
+                    }
+                    response3 = requests.post(url4, data=data1, headers=headers1)
+                    print(response3.json())
+                    response_data2 = response3.json()['data']
+                    projectname2 = response_data2['projectName']
+                    # 4.项目合规性手续提交稽核
+                    api4 = Api('api')['项目合规性手续提交稽核']
+                    url5 = f"https://{host}{api4}"
+                    data2 = json.dumps({
+                        "processId": "1889950321795534848",
+                        "businessId": f"{projectid}",
+                        "nodeUserList": [
+                            {
+                                "nodeId": "1889950321795534849",
+                                "userId": 70557
+                            },
+                            {
+                                "nodeId": "1889950321795534850",
+                                "userId": 71048
+                            }
+                        ],
+                        "businessType": 7,
+                        "businessData": {
+                            "data": {
+                                "projectName": f"{projectname2}",
+                                "projectId": f"{projectid}"
+                            }
+                        }
+                    })
+                    headers2 = {
+                        "Authorization": f"Bearer {authorization}",
+                        "Content-Type": "application/json"
+                    }
+                    response4 = requests.post(url5, data=data2, headers=headers2)
+                    response_data3 = response4.json()
+                    assert response_data3['code'] == 200
+                    log.debug(f"{projectname2}项目合规性手续提交稽核成功")
+                    break
+                else:
+                    log.debug(f"第{i + 1}个项目已处于合规性手续办理流程中，跳过")
+                    continue
+            else:
+                log.debug("没有可研完成且尚未提交合规性手续稽核的项目")
+        else:
+            log.debug("没有可研完成的项目")
 
     def ss_project_investment(self, queryname):
         """更新项目投资预算实施进度，提交稽核"""
@@ -451,15 +575,223 @@ class Ssgl:
         if num > 0:
             """可研完成的项目可能有多个，有些可能已经是提交稽核，用for循环来遍历尝试，直到添加成功break"""
             for i in range(num):
-                # 2.查询项目招投标及合同文件详情
+                # 2.查询项目投资预算实施进度详情
                 list_info = data_list1[i]
                 projectid = list_info['projectId']
-                api2 = Api('api')['项目招投标及合同文件详情']
+                api2 = Api('api')['项目投资预算实施进度详情']
                 url3 = f"https://{host}{api2}"
                 url_ss = '?'.join([url3, f'projectId={projectid}'])
                 response2 = requests.get(url_ss, headers=headers)
                 response_json = response2.json()
                 response_data2 = response_json['data']
+                if not response_data2[0]['implAssetStatus'] or response_data2[0]['implAssetStatus'] == 'tb':
+                    # 3.更新项目投资预算实施进度
+                    api3 = Api('api')['保存项目投资预算实施进度']
+                    url4 = f"https://{host}{api3}"
+                    data1 = json.dumps({
+                        "projectId": f"{projectid}",
+                        "detailList": [
+                            {
+                                "budgetAmount": 30,
+                                "fieldCname": "1.基建概算",
+                                "fieldName": "flatProAmount",
+                                "projectId": f"{projectid}",
+                                "sorted": 10,
+                                "type": "count",
+                                "implAssetStatus": "tb",
+                                "actualAmount": 31
+                            },
+                            {
+                                "budgetAmount": 10,
+                                "fieldCname": "1.1 总平工程",
+                                "fieldName": "totalFlatProAmount",
+                                "projectId": f"{projectid}",
+                                "sorted": 11,
+                                "type": "edit",
+                                "actualAmount": "10"
+                            },
+                            {
+                                "budgetAmount": 10,
+                                "fieldCname": "1.2 单体工程",
+                                "fieldName": "synthFlatProAmount",
+                                "projectId": f"{projectid}",
+                                "sorted": 12,
+                                "type": "edit",
+                                "actualAmount": "9"
+                            },
+                            {
+                                "budgetAmount": 10,
+                                "fieldCname": "1.3 封装工程",
+                                "fieldName": "warapFlatProAmount",
+                                "projectId": f"{projectid}",
+                                "sorted": 13,
+                                "type": "edit",
+                                "actualAmount": "11"
+                            },
+                            {
+                                "budgetAmount": 0,
+                                "fieldCname": "1.4 其他基建工程",
+                                "fieldName": "otherFlatProAmount",
+                                "projectId": f"{projectid}",
+                                "sorted": 14,
+                                "type": "edit",
+                                "actualAmount": "1"
+                            },
+                            {
+                                "budgetAmount": 30,
+                                "fieldCname": "2.设备概算",
+                                "fieldName": "equipmentAmount",
+                                "projectId": f"{projectid}",
+                                "sorted": 20,
+                                "type": "count",
+                                "actualAmount": 18
+                            },
+                            {
+                                "budgetAmount": 10,
+                                "fieldCname": "2.1 生产设备",
+                                "fieldName": "produceEquipmentAmount",
+                                "projectId": f"{projectid}",
+                                "sorted": 21,
+                                "type": "edit",
+                                "actualAmount": "10"
+                            },
+                            {
+                                "budgetAmount": 0,
+                                "fieldCname": "2.2 环保设备",
+                                "fieldName": "environmentEquipmentAmount",
+                                "projectId": f"{projectid}",
+                                "sorted": 22,
+                                "type": "edit"
+                            },
+                            {
+                                "budgetAmount": 10,
+                                "fieldCname": "2.3 实验设备",
+                                "fieldName": "experimentEquipmentAmount",
+                                "projectId": f"{projectid}",
+                                "sorted": 23,
+                                "type": "edit",
+                                "actualAmount": "8"
+                            },
+                            {
+                                "budgetAmount": 0,
+                                "fieldCname": "2.4 办公及后勤设备",
+                                "fieldName": "rearEquipmentAmount",
+                                "projectId": f"{projectid}",
+                                "sorted": 24,
+                                "type": "edit"
+                            },
+                            {
+                                "budgetAmount": 10,
+                                "fieldCname": "2.5 其他设备",
+                                "fieldName": "otherEquipmentAmount",
+                                "projectId": f"{projectid}",
+                                "sorted": 25,
+                                "type": "edit"
+                            },
+                            {
+                                "budgetAmount": 10,
+                                "fieldCname": "3.工程建设服务费",
+                                "fieldName": "proServerAmount",
+                                "projectId": f"{projectid}",
+                                "sorted": 30,
+                                "type": "edit"
+                            },
+                            {
+                                "budgetAmount": 10,
+                                "fieldCname": "4.土地购置费",
+                                "fieldName": "landPurAmount",
+                                "projectId": f"{projectid}",
+                                "sorted": 40,
+                                "type": "edit"
+                            },
+                            {
+                                "budgetAmount": 20,
+                                "fieldCname": "5.不可预见费",
+                                "fieldName": "preparAmount",
+                                "projectId": f"{projectid}",
+                                "sorted": 50,
+                                "type": "count",
+                                "actualAmount": 0
+                            },
+                            {
+                                "budgetAmount": 10,
+                                "fieldCname": "5.1 基本预备费",
+                                "fieldName": "basicPreparAmount",
+                                "projectId": f"{projectid}",
+                                "sorted": 51,
+                                "type": "edit"
+                            },
+                            {
+                                "budgetAmount": 10,
+                                "fieldCname": "5.2 涨价预备费",
+                                "fieldName": "increasePreparAmount",
+                                "projectId": f"{projectid}",
+                                "sorted": 52,
+                                "type": "edit"
+                            },
+                            {
+                                "budgetAmount": 100,
+                                "fieldCname": "6.总投资额",
+                                "fieldName": "totalAmount",
+                                "projectId": f"{projectid}",
+                                "sorted": 60,
+                                "type": "count",
+                                "actualAmount": 49
+                            }
+                        ]
+                    }
+                    )
+                    headers1 = {
+                        "Content-Type": "application/json",
+                        "Authorization": f"Bearer {authorization}"
+                    }
+                    response3 = requests.post(url1, headers=headers1, json=data1)
+                    print(response1.json())
+                    response_data3 = response3.json()['data']
+                    projectname2 = response_data3['projectName']
+                    # 4.项目投资预算实施进度提交稽核
+                    api4 = Api('api')['项目投资预算实施进度提交稽核']
+                    url5 = f"https://{host}{api4}"
+                    data2 = json.dumps({
+                        "processId": "1889935646890528768",
+                        "businessId": f"{projectid}",
+                        "nodeUserList": [
+                            {
+                                "nodeId": "1889935646890528769",
+                                "userId": 70557
+                            },
+                            {
+                                "nodeId": "1889935646890528770",
+                                "userId": 71048
+                            }
+                        ],
+                        "businessType": 8,
+                        "businessData": {
+                            "data": {
+                                "projectName": f"{projectname2}",
+                                "projectId": f"{projectid}"
+                            }
+                        }
+                    })
+                    headers2 = {
+                        "Content-Type": "application/json",
+                        "Authorization": f"Bearer {authorization}"
+                    }
+                    response4 = requests.post(url5, headers=headers2, json=data2)
+                    print(response4.json())
+                    assert response4.json()['code'] == 200
+                    log.debug(f'{projectname2}项目投资预算实施进度提交稽核成功')
+                    break
+                else:
+                    log.debug(f"第{i + 1}个项目已处于合规性手续办理流程中，跳过")
+                    # continue
+            else:
+                log.debug("没有可研完成且尚未提交投资预算实施进度稽核的项目")
+        else:
+            log.debug("没有可研完成的项目")
+
+
+
 
 
 
