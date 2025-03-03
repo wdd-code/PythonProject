@@ -15,11 +15,11 @@ class Log:
         # 2.创建一个handler，用于写入日志文件
         # fh = logging.FileHandler(self.log_path, encoding="utf-8",mode='w')
         # fh.setLevel(logging.DEBUG)
-        # 4.定义handler的输出格式
+        # 3.定义handler的输出格式
         formatter = logging.Formatter(self.fmt)
         #fh.setFormatter(formatter)
         # ch.setFormatter(formatter)
-        # 3.再创建一个handler，用于输出到控制台
+        # 4.再创建一个handler，用于输出到控制台
         # ch = logging.StreamHandler()
         # ch.setLevel(logging.DEBUG)
         # 检查并添加Handler
