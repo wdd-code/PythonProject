@@ -16,18 +16,6 @@ class Lxtz:
     #authorization = login()
     def __init__(self):
         self.authorization,self.userid = login()
-
-    # def lx_reset(self):
-    #     authorization = self.authorization
-    #     host = Readconfig('HOST-TZB').host
-    #     api = Api('api')['立项台账列表信息']
-    #     url = f"https://{host}{api}"
-    #     headers = {
-    #         "Authorization": f"Bearer {authorization}"
-    #     }
-    #     response = requests.get(url, headers=headers)
-    #     assert response.status_code == 200
-    #     log.debug("返回立项台账列表数据成功")
     def lx_search(self):
         """立项查询"""
         # 定义接口URL

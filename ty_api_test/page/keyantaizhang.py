@@ -408,7 +408,7 @@ class Kytz:
 
 ky = Kytz()
 if __name__ == '__main__':
-    for i in range(2):
+    for i in range(2):           #批量造数据
         result = ky.ky_add_project('测试')
         if result is not None:
             id1, createtime, projectname, projectcode, projectid= result

@@ -24,8 +24,9 @@ def login(u="User1", p="Password1"):
         "password": f"{password}",
         "grant_type": "password"
     }
-    #print(data)
+    # print(data)
     # 发送POST请求
+    # response = requests.post(url, headers=headers, data=data,verify=False)  #如果报错ssl证书异常，可以暂时设置verify=False来规避
     response = requests.post(url, headers=headers, data=data)
 
     # 打印响应状态码
@@ -44,15 +45,15 @@ def login(u="User1", p="Password1"):
         "Authorization": f"Bearer {Authorization}"
     }
     response1 = requests.get(url1, headers=headers1)
-    #print(response1.json())
+    # print(response1.json())
     data2 = response1.json()['data']
     userinfo = data2['userInfo']
     userid = userinfo['id']
-    #print(userid)
+    # print(userid)
     return Authorization,userid
 
 #login("User2", "Password2")
 #User3 = wangyong6
 #User2 = kangle1
 #User1 = caomeng
-
+# login()
