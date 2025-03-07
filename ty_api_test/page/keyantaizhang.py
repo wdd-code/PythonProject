@@ -154,7 +154,7 @@ class Kytz:
         url = f"https://{host}{api}"
         response = requests.post(url, headers=headers, data=data)
         # print(response.json())
-        assert response.status_code == 200
+        assert response.json()['code'] == 200
         log.debug('可研填报-基础信息保存成功')
         # return id
     def ky_upload(self):
@@ -183,7 +183,7 @@ class Kytz:
             filename = data['relativePathAndFileName']
             # print(uri)
             # print(filename)
-            assert response.status_code == 200
+            assert response.json()['code'] == 200
         log.debug("上传文件成功")
         # print(uri)
         # print(filename)
@@ -213,7 +213,7 @@ class Kytz:
         })
         response = requests.post(url, headers=headers, data=data)
         # print(response.json())
-        assert response.status_code == 200
+        assert response.json()['code'] == 200
         log.debug('可研填报-可研资料保存成功')
         #return id
     def ky_save3(self,id):
@@ -244,7 +244,7 @@ class Kytz:
         ])
         response = requests.post(url, data, headers=headers)
         # print(response.json())
-        assert response.status_code == 200
+        assert response.json()['code'] == 200
         logging.debug('可研填报-实施计划保存成功')
         #return id
     def ky_save4(self,id):
@@ -277,7 +277,7 @@ class Kytz:
         ])
         response = requests.post(url, data, headers=headers)
         # print(response.json())
-        assert response.status_code == 200
+        assert response.json()['code'] == 200
         log.debug('可研填报-手续办理计划保存成功')
         #return id1
 
@@ -320,14 +320,14 @@ class Kytz:
         })
         response1 = requests.post(url, data, headers=headers)
         # print(response1.json())
-        assert response1.status_code == 200
+        assert response1.json()['code'] == 200
         log.debug('财务评价指标保存成功')
         api1 = Api('api')['保存经济测算表']
         url1 = f"https://{host}{api1}"
         data1 = json.dumps({"feasibleId":f"{id}","decisionList":[]})
         response2 = requests.post(url1, data1, headers=headers)
         # print(response2.json())
-        assert response2.status_code == 200
+        assert response2.json()['code'] == 200
         log.debug('可研填报-经济测算表保存成功')
         #return id1
 
@@ -370,7 +370,7 @@ class Kytz:
         })
         response = requests.post(url, data, headers=headers)
         # print(response.json())
-        assert response.status_code == 200
+        assert response.json()['code'] == 200
         log.debug('可研填报-可研项目评审和决策情况保存成功')
         #return id1
 
@@ -403,12 +403,12 @@ class Kytz:
             "businessData": {"data": {"projectName": f"{projectname}"}}
         })
         response = requests.post(url, data=data, headers=headers)
-        assert response.status_code == 200
+        assert response.json()['code'] == 200
         log.debug("可研提交稽核成功")
 
 ky = Kytz()
 if __name__ == '__main__':
-    for i in range(2):           #批量造数据
+    for i in range(6):           #批量造数据
         result = ky.ky_add_project('测试')
         if result is not None:
             id1, createtime, projectname, projectcode, projectid= result

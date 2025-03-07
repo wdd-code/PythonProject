@@ -40,7 +40,7 @@ class Dbjh:
         # print(data)
         response = requests.post(url, data, headers=headers)
         # print(response.json())
-        assert response.status_code == 200
+        assert response.json()['code'] == 200
 
         data1 = response.json()['data']
         datalist = data1['list']
@@ -80,12 +80,12 @@ class Dbjh:
                     "comments": "稽核测试通过"
                 })
                 response = requests.post(url, headers=headers, data=data)
-                assert response.status_code == 200
+                assert response.json()['code'] == 200
                 #print(response.json())
                 log.debug(f'第{i+1}条立项待办任务审核通过成功')
                 i+=1
         else:
-            log.debug(f"暂时没有{excuted_num}条待办任务")
+            log.debug(f"抱歉，目前只有{num}条待办任务")
 
 
     def ky_jude_pass(self,excuted_num=1):
@@ -112,12 +112,12 @@ class Dbjh:
                     "comments": "稽核测试通过"
                 })
                 response = requests.post(url, headers=headers, data=data)
-                assert response.status_code == 200
+                assert response.json()['code'] == 200
                 #print(response.json())
                 log.debug(f'第{i+1}条可研待办任务审核通过成功')
                 i+=1
         else:
-            log.debug(f"暂时没有{excuted_num}条待办任务")
+            log.debug(f"抱歉，目前只有{num}条待办任务")
     def lx_jude_reject(self,excuted_num=1):
         """立项待办任务稽核驳回"""
         authorization = self.authorization
@@ -140,12 +140,12 @@ class Dbjh:
                     "comments": "稽核测试驳回"
                 })
                 response = requests.post(url, headers=headers, data=data)
-                assert response.status_code == 200
+                assert response.json()['code'] == 200
                 #print(response.json())
                 log.debug(f'第{i+1}条立项待办任务审核驳回成功')
                 i+=1
         else:
-            log.debug(f"暂时没有{excuted_num}条待办任务")
+            log.debug(f"抱歉，目前只有{num}条待办任务")
     def ky_jude_reject(self,excuted_num=1):
         """可研待办任务稽核驳回"""
         authorization = self.authorization
@@ -169,12 +169,175 @@ class Dbjh:
                 })
                 response1 = requests.post(url, headers=headers, data=data)
                 print(response1.json())
-                assert response1.status_code == 200
+                assert response1.json()['code'] == 200
               #print(response.json())
                 log.debug(f'第{i+1}条可研待办任务审核驳回成功')
                 i+=1
         else:
-            log.debug(f"暂时没有{excuted_num}条待办任务")
+            log.debug(f"抱歉，目前只有{num}条待办任务")
+
+    def ssxkl_jude_pass(self,excuted_num=1):
+        """实施许可令待办任务稽核通过"""
+        authorization = self.authorization
+        host = Readconfig('HOST-TZB').host
+        api = Api('api')['实施许可令稽核']
+        url = f"https://{host}{api}"
+        headers = {
+            "Authorization": f"Bearer {authorization}",
+            'Content-Type': 'application/json'
+        }
+        businessId_list, taskId_list, num = self.get_task("3")
+        if num>=excuted_num:
+            for i in range(excuted_num):
+                data = json.dumps({
+                    "status": "APPROVE",
+                    "result": "通过",
+                    "businessId": f"{businessId_list[i]}",
+                    "taskId": f"{taskId_list[i]}",
+                    "comments": "稽核测试通过"
+                })
+                response = requests.post(url, headers=headers, data=data)
+                assert response.json()['code'] == 200
+                #print(response.json())
+                log.debug(f'第{i+1}条实施许可令待办任务审核通过成功')
+                i+=1
+        else:
+            log.debug(f"抱歉，目前只有{num}条待办任务")
+    def company_jude_pass(self,excuted_num=1):
+        """项目公司待办任务稽核通过"""
+        authorization = self.authorization
+        host = Readconfig('HOST-TZB').host
+        api = Api('api')['项目公司稽核']
+        url = f"https://{host}{api}"
+        headers = {
+            "Authorization": f"Bearer {authorization}",
+            'Content-Type': 'application/json'
+        }
+        businessId_list, taskId_list, num = self.get_task("4")
+        if num>=excuted_num:
+            for i in range(excuted_num):
+                data = json.dumps({
+                    "status": "APPROVE",
+                    "result": "通过",
+                    "businessId": f"{businessId_list[i]}",
+                    "taskId": f"{taskId_list[i]}",
+                    "comments": "稽核测试通过"
+                })
+                response = requests.post(url, headers=headers, data=data)
+                assert response.json()['code'] == 200
+                #print(response.json())
+                log.debug(f'第{i+1}条项目公司待办任务审核通过成功')
+                i+=1
+        else:
+            log.debug(f"抱歉，目前只有{num}条待办任务")
+    def contract_jude_pass(self,excuted_num=1):
+        """招投标及合同文件待办任务稽核通过"""
+        authorization = self.authorization
+        host = Readconfig('HOST-TZB').host
+        api = Api('api')['招投标及合同文件稽核']
+        url = f"https://{host}{api}"
+        headers = {
+            "Authorization": f"Bearer {authorization}",
+            'Content-Type': 'application/json'
+        }
+        businessId_list, taskId_list, num = self.get_task("5")
+        if num>=excuted_num:
+            for i in range(excuted_num):
+                data = json.dumps({
+                    "status": "APPROVE",
+                    "result": "通过",
+                    "businessId": f"{businessId_list[i]}",
+                    "taskId": f"{taskId_list[i]}",
+                    "comments": "稽核测试通过"
+                })
+                response = requests.post(url, headers=headers, data=data)
+                assert response.json()['code'] == 200
+                #print(response.json())
+                log.debug(f'第{i+1}条招投标及合同文件待办任务审核通过成功')
+                i+=1
+        else:
+            log.debug(f"抱歉，目前只有{num}条待办任务")
+    def progress_jude_pass(self,excuted_num=1):
+        """建设实施进度待办任务稽核通过"""
+        authorization = self.authorization
+        host = Readconfig('HOST-TZB').host
+        api = Api('api')['建设实施进度稽核']
+        url = f"https://{host}{api}"
+        headers = {
+            "Authorization": f"Bearer {authorization}",
+            'Content-Type': 'application/json'
+        }
+        businessId_list, taskId_list, num = self.get_task("6")
+        if num>=excuted_num:
+            for i in range(excuted_num):
+                data = json.dumps({
+                    "status": "APPROVE",
+                    "result": "通过",
+                    "businessId": f"{businessId_list[i]}",
+                    "taskId": f"{taskId_list[i]}",
+                    "comments": "稽核测试通过"
+                })
+                response = requests.post(url, headers=headers, data=data)
+                assert response.json()['code'] == 200
+                #print(response.json())
+                log.debug(f'第{i+1}条建设实施进度待办任务审核通过成功')
+                i+=1
+        else:
+            log.debug(f"抱歉，目前只有{num}条待办任务")
+    def compliance_jude_pass(self,excuted_num=1):
+        """合规性手续待办任务稽核通过"""
+        authorization = self.authorization
+        host = Readconfig('HOST-TZB').host
+        api = Api('api')['合规性手续稽核']
+        url = f"https://{host}{api}"
+        headers = {
+            "Authorization": f"Bearer {authorization}",
+            'Content-Type': 'application/json'
+        }
+        businessId_list, taskId_list, num = self.get_task("7")
+        if num>=excuted_num:
+            for i in range(excuted_num):
+                data = json.dumps({
+                    "status": "APPROVE",
+                    "result": "通过",
+                    "businessId": f"{businessId_list[i]}",
+                    "taskId": f"{taskId_list[i]}",
+                    "comments": "稽核测试通过"
+                })
+                response = requests.post(url, headers=headers, data=data)
+                assert response.json()['code'] == 200
+                #print(response.json())
+                log.debug(f'第{i+1}条合规性手续待办任务审核通过成功')
+                i+=1
+        else:
+            log.debug(f"抱歉，目前只有{num}条待办任务")
+    def asset_jude_pass(self,excuted_num=1):
+        """预算实施进度待办任务稽核通过"""
+        authorization = self.authorization
+        host = Readconfig('HOST-TZB').host
+        api = Api('api')['预算实施进度稽核']
+        url = f"https://{host}{api}"
+        headers = {
+            "Authorization": f"Bearer {authorization}",
+            'Content-Type': 'application/json'
+        }
+        businessId_list, taskId_list, num = self.get_task("8")
+        if num>=excuted_num:
+            for i in range(excuted_num):
+                data = json.dumps({
+                    "status": "APPROVE",
+                    "result": "通过",
+                    "businessId": f"{businessId_list[i]}",
+                    "taskId": f"{taskId_list[i]}",
+                    "comments": "稽核测试通过"
+                })
+                response = requests.post(url, headers=headers, data=data)
+                assert response.json()['code'] == 200
+                #print(response.json())
+                log.debug(f'第{i+1}条预算实施进度待办任务审核通过成功')
+                i+=1
+        else:
+            log.debug(f"抱歉，目前只有{num}条待办任务")
 
 # db1 = Dbjh('User3','Password3')
 #db2 = Dbjh('User2','Password2')
@@ -185,20 +348,74 @@ if __name__ == '__main__':
 
     # #1.1二级单位稽核人立项稽核
     # db1 = Dbjh('User3', 'Password3')
-    # db1.lx_jude_pass(1)
+    # db1.lx_jude_pass(4)
     # db1.get_task("1")
     # sleep(1)
     # #1.2总部审定人立项审定
     # db2 = Dbjh('User2','Password2')
-    # db2.lx_jude_pass(1)
+    # db2.lx_jude_pass(4)
     # db2.get_task("1")
-    # db2.lx_jude_reject(1)
+
     #
-    # 2.1可研稽核:
+    # # 2.1可研稽核:
+    # db1 = Dbjh('User3', 'Password3')
+    # db1.ky_jude_pass(4)
+    # db1.get_task("2")
+    # # 2.2可研审定:
+    # db2 = Dbjh('User2','Password2')
+    # db2.ky_jude_pass(2)
+    # db2.get_task("2")
+
+    # 3.1实施许可令稽核:
     db1 = Dbjh('User3', 'Password3')
-    db1.ky_jude_pass(1)
-    db1.get_task("2")
-    # 2.2可研审定:
-    db2 = Dbjh('User2','Password2')
-    db2.ky_jude_pass(1)
-    db2.get_task("2")
+    # db1.ssxkl_jude_pass(1)
+    db1.get_task("3")
+    # # 3.2实施许可令审定:
+    # db2 = Dbjh('User2', 'Password2')
+    # db2.ssxkl_jude_pass(1)
+    # db2.get_task("3")
+
+    # 4.1项目公司稽核:
+    # db1 = Dbjh('User3', 'Password3')
+    # db1.company_jude_pass(1)
+    # db1.get_task("4")
+    # # 4.2项目公司审定:
+    # db2 = Dbjh('User2', 'Password2')
+    # db2.company_jude_pass(1)
+    # db2.get_task("4")
+
+    # 5.1招投标及合同文件稽核:
+    # db1 = Dbjh('User3', 'Password3')
+    # db1.contract_jude_pass(1)
+    # db1.get_task("5")
+    # # 5.2招投标及合同文件审定:
+    # db2 = Dbjh('User2', 'Password2')
+    # db2.contract_jude_pass(1)
+    # db2.get_task("5")
+
+    # 6.1建设实施进度稽核:
+    # db1 = Dbjh('User3', 'Password3')
+    # db1.progress_jude_pass(1)
+    # db1.get_task("6")
+    # # 6.2建设实施进度审定:
+    # db2 = Dbjh('User2', 'Password2')
+    # db2.progress_jude_pass(1)
+    # db2.get_task("6")
+
+    # 7.1合规性手续稽核稽核:
+    # db1 = Dbjh('User3', 'Password3')
+    # db1.compliance_jude_pass(1)
+    # db1.get_task("7")
+    # # 7.2合规性手续稽核审定:
+    # db2 = Dbjh('User2', 'Password2')
+    # db2.compliance_jude_pass(1)
+    # db2.get_task("7")
+
+    # 8.1预算实施进度稽核稽核:
+    # db1 = Dbjh('User3', 'Password3')
+    # db1.asset_jude_pass(1)
+    # db1.get_task("8")
+    # # 8.2预算实施进度审定:
+    # db2 = Dbjh('User2', 'Password2')
+    # db2.asset_jude_pass(1)
+    # db2.get_task("8")

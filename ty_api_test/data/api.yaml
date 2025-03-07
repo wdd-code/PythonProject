@@ -19,8 +19,16 @@
 待办任务: "api==/flow/getTask"
 
 #businessType=1,立项项目；2,可研项目；3，实施许可令；97，项目中止恢复；98，项目中止；99，项目终止
+#4,项目公司；5，招投标及合同文件；6，建设实施进度；7，合规性手续；8，预算实施进度；9，投产
 立项稽核: "api==/investProEstablish/audit"
 可研稽核: "api==/investFeasibleInfo/audit"
+实施许可令稽核: "api==/investImplLicense/audit"
+项目公司稽核: "api==/investImplCompany/audit"
+招投标及合同文件稽核: "api==/investImplContract/audit"
+建设实施进度稽核: "api==/investImplProgress/audit"
+合规性手续稽核: "api==/investImplCompliance/audit"
+预算实施进度稽核: "api==/investImplAsset/audit"
+#投产稽核: "api==/investImplProduction/audit"
 
 #可研管理
 可研台账列表信息: "api==/investFeasibleInfo/pageList?pageNum=1&pageSize=10"
@@ -42,7 +50,9 @@
 添加实施许可令: "api==/investImplLicense/add"
 实施提交稽核: "api==/investImplLicense/submit"
 项目公司详情: "api==/investImplCompany/detail"
+删除文件: "api==/v1/file/delete"
 添加项目公司: "api==/investImplCompany/add"
+更新项目公司: "api==/investImplCompany/update"
 项目公司提交稽核: "api==/investImplCompany/submit"
 项目招投标及合同文件详情: "api==/investImplContract/list"
 添加项目招投标及合同文件: "api==/investImplContract/save"

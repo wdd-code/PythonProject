@@ -30,7 +30,7 @@ class Lxtz:
         # 发送GET请求
         response = requests.get(url, headers=headers)
         #print("Status Code:", response.status_code)
-        assert response.status_code == 200
+        assert response.json()['code'] == 200
         log.debug("查询成功")
 
     def lx_info(self):
@@ -54,7 +54,7 @@ class Lxtz:
         # 打印响应状态码
         # print("Status Code:", response.status_code)
         # print(response.json())
-        assert response.status_code == 200
+        assert response.json()['code'] == 200
         log.debug("返回立项台账列表数据成功")
         data = response.json()['data']
         datalist = data['list']
@@ -78,7 +78,7 @@ class Lxtz:
             "Authorization": f"Bearer {authorization}"
         }
         response = requests.get(url, headers=headers)
-        assert response.status_code == 200
+        assert response.json()['code'] == 200
         log.debug("成功返回项目编号")
     def lx_detail(self):
         """查看立项详情"""
@@ -90,7 +90,7 @@ class Lxtz:
             "Authorization": f"Bearer {authorization}"
         }
         response = requests.get(url, headers=headers)
-        assert response.status_code == 200
+        assert response.json()['code'] == 200
         log.debug("查看立项详情成功")
     def lx_create_project(self):
         """创建立项项目"""
@@ -149,7 +149,7 @@ class Lxtz:
         }
         response = requests.post(url, headers=header1, data=data)
         # print(response.json())
-        assert response.status_code == 200
+        assert response.json()['code'] == 200
         log.debug("创建立项项目成功")
         data = response.json()['data']
         id = data['id']
@@ -177,9 +177,8 @@ class Lxtz:
                 # print(payload)
                 response = requests.post(url1, headers=headers, data=payload)
                 # print(response.json())
-                assert response.status_code == 200
+                assert response.json()['code'] == 200
                 log.debug("删除立项项目成功")
-
         else:
             log.debug("没有可删除的立项项目")
 
@@ -209,7 +208,7 @@ class Lxtz:
             filename = data['relativePathAndFileName']
             # print(uri)
             # print(filename)
-            assert response.status_code == 200
+            assert response.json()['code'] == 200
         log.debug("上传文件成功")
         # print(uri)
         # print(filename)
@@ -246,7 +245,7 @@ class Lxtz:
         # print(headers)
         response1 = requests.post(url, headers=headers, data=data)
         # print(response1.json())
-        assert response1.status_code == 200
+        assert response1.json()['code'] == 200
         log.debug("立项资料保存成功")
 
     def lx_save2(self, id):
@@ -275,7 +274,7 @@ class Lxtz:
             ]
         })
         response = requests.post(url, data=data, headers=headers)
-        assert response.status_code == 200
+        assert response.json()['code'] == 200
         log.debug("项目评审和决策情况保存成功")
     def lx_submit(self, id,project_name):
         """项目立项提交稽核"""
@@ -306,7 +305,7 @@ class Lxtz:
         "businessData": {"data": {"projectName": f"{project_name}"}}
         })
         response = requests.post(url, data=data, headers=headers)
-        assert response.status_code == 200
+        assert response.json()['code'] == 200
         log.debug("立项提交稽核成功")
 
 
@@ -324,7 +323,7 @@ if __name__ == '__main__':
     # l1.lx_submit(id)
     #l1.lx_jhlc()
     #批量造数据
-    for i in range(2):
+    for i in range(10):
         l1 = Lxtz()
         id, project_name = l1.lx_create_project()
         l1.lx_save1(id)
