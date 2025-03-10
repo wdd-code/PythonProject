@@ -25,9 +25,9 @@
 实施许可令稽核: "api==/investImplLicense/audit"
 项目公司稽核: "api==/investImplCompany/audit"
 招投标及合同文件稽核: "api==/investImplContract/audit"
-建设实施进度稽核: "api==/investImplProgress/audit"
-合规性手续稽核: "api==/investImplCompliance/audit"
-预算实施进度稽核: "api==/investImplAsset/audit"
+建设实施进度稽核: "api==/investImplProgressDetail/audit"
+合规性手续稽核: "api==/investImplComplianceDetail/audit"
+预算实施进度稽核: "api==/investImplAssetDetail/audit"
 #投产稽核: "api==/investImplProduction/audit"
 
 #可研管理

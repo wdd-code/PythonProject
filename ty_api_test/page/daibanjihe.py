@@ -46,7 +46,8 @@ class Dbjh:
         datalist = data1['list']
         #print(datalist)
         # print(len(datalist))
-        num = len(datalist)
+        # num = len(datalist)
+        num = data1['total']
         businessid_list =[]
         taskid_list = []
         for i in range(num):
@@ -225,7 +226,7 @@ class Dbjh:
                 })
                 response = requests.post(url, headers=headers, data=data)
                 assert response.json()['code'] == 200
-                #print(response.json())
+                print(response.json())
                 log.debug(f'第{i+1}条项目公司待办任务审核通过成功')
                 i+=1
         else:
@@ -278,8 +279,8 @@ class Dbjh:
                     "comments": "稽核测试通过"
                 })
                 response = requests.post(url, headers=headers, data=data)
+                # print(response.json())
                 assert response.json()['code'] == 200
-                #print(response.json())
                 log.debug(f'第{i+1}条建设实施进度待办任务审核通过成功')
                 i+=1
         else:
@@ -366,10 +367,10 @@ if __name__ == '__main__':
     # db2.ky_jude_pass(2)
     # db2.get_task("2")
 
-    # 3.1实施许可令稽核:
-    db1 = Dbjh('User3', 'Password3')
+    # # 3.1实施许可令稽核:
+    # db1 = Dbjh('User3', 'Password3')
     # db1.ssxkl_jude_pass(1)
-    db1.get_task("3")
+    # db1.get_task("3")
     # # 3.2实施许可令审定:
     # db2 = Dbjh('User2', 'Password2')
     # db2.ssxkl_jude_pass(1)
@@ -403,9 +404,9 @@ if __name__ == '__main__':
     # db2.get_task("6")
 
     # 7.1合规性手续稽核稽核:
-    # db1 = Dbjh('User3', 'Password3')
-    # db1.compliance_jude_pass(1)
-    # db1.get_task("7")
+    db1 = Dbjh('User3', 'Password3')
+    db1.compliance_jude_pass(1)
+    db1.get_task("7")
     # # 7.2合规性手续稽核审定:
     # db2 = Dbjh('User2', 'Password2')
     # db2.compliance_jude_pass(1)
