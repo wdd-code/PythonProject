@@ -1,3 +1,0 @@
-2025-02-07 10:28:07,418 - connectionpool.py[line:1051] - DEBUG: Starting new HTTPS connection (1): api-dev-uc.002302.com.cn:443
-2025-02-07 10:28:07,521 - connectionpool.py[line:546] - DEBUG: https://api-dev-uc.002302.com.cn:443 "POST /oauth/token HTTP/11" 200 None
-2025-02-07 10:28:07,522 - ty_test.py[line:27] - DEBUG: 登录成功
